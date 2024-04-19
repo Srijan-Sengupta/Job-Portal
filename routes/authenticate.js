@@ -1,20 +1,22 @@
 const express = require("express");
 const Applicant = require("../models/applicant");
 const Recruiter = require("../models/recruiter");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 router = express.Router();
 
 router.post("/register-applicant", async (req, res) => {
 	const applicant = req.body;
 
-	const takenUsername = Applicant.findOne({ username: applicant.username });
-	const takenEmail = Applicant.findOne({ email: applicant.email });
+	const takenUsername = await Applicant.findOne({ username: applicant.username }).exec();
+	const takenEmail = await Applicant.findOne({ email: applicant.email }).exec();
 
 	if (takenUsername) {
 		res.json({ message: "This username has already been taken" });
 	} else if (takenEmail) {
 		res.json({ message: "This email is already in use." });
-	} else {
+	} else{ 
 		applicant.password = await bcrypt.hash(req.body.password, 10);
 
 		const dbApplicant = new Applicant({
@@ -30,15 +32,15 @@ router.post("/register-applicant", async (req, res) => {
 router.post("/register-recruiter", async (req, res) =>{
 	const recruiter = req.body;
 
-	const takenUsername = Recruiter.findOne({username: recruiter.username});
-	const takenEmail = Recruiter.findOne({email: recruiter.email});
+	const takenUsername = await Recruiter.findOne({username: recruiter.username}).exec();
+	const takenEmail = await Recruiter.findOne({email: recruiter.email}).exec();
 
 	if(takenEmail){
 		res.json({ message: "This email is already in use."})
 	}else if(takenUsername){
 		res.json({message: "This username has already been taken."})
 	}else{
-		recruiter.password = bcrypt.hash(recruiter.password, 10);
+		recruiter.password = await bcrypt.hash(recruiter.password, 10);
 
 		const dbRecruiter = new Recruiter({
 			username: recruiter.username,
@@ -65,7 +67,7 @@ router.post("/applicant-login", async (req, res) => {
 					username: dbUser.username,
 				}
 				jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: 86400}, (err, token) => {
-					if (err) return res.json({message: err})
+					if (err) {return res.json({message: err})};
 					return res.json({message: "Success", token: "Bearer " + token})
 				})
 			}else{
@@ -78,7 +80,7 @@ router.post("/applicant-login", async (req, res) => {
 router.post("/recruiter-login", async (req, res) => {
 	const recruiterLoggingIn = req.body;
 
-	Recruiter.findOne({ username: recruiterLoggingIn }).then((dbUser) => {
+	Recruiter.findOne({ username: recruiterLoggingIn.username }).exec().then((dbUser) => {
 		if(!dbUser){
 			return res.json({message: "Invalid Username or Password"})
 		}

@@ -5,8 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
-    "build": "echo building",
-    "install": "node app.js"
+    "build": "netlify deploy --prod"
   },
   "author": "Prochesta",
   "license": "GPL-3.0-only",

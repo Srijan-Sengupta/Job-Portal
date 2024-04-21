@@ -2,9 +2,9 @@
   "name": "backend",
   "version": "0.0.1",
   "description": "The Backend of the job portal",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node index.js"
   },
   "author": "Prochesta",
   "license": "GPL-3.0-only",

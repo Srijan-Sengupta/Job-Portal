@@ -4,8 +4,7 @@
   "description": "The Backend of the job portal",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "build": "netlify deploy --prod"
+    "start": "node app.js"
   },
   "author": "Prochesta",
   "license": "GPL-3.0-only",

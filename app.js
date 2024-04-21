@@ -29,6 +29,7 @@ app.use(express.json());
 app.use("/auth", require("./routes/authenticate"))
 app.use("/applicant", require("./routes/applicant"))
 app.use("/recruiter", require("./routes/recruiter"))
+app.use("/job", require("./routes/job"))
 
 app.get("/", (_req, res) => {
 	res.json({message: "Start Test all up!!"})

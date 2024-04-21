@@ -4,7 +4,9 @@
   "description": "The Backend of the job portal",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "build": "echo building",
+    "install": "node app.js"
   },
   "author": "Prochesta",
   "license": "GPL-3.0-only",
